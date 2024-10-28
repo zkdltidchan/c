@@ -1,4 +1,4 @@
-import ChatCard from '../components/Chat/ChatCard';
+import ChatCard from '@/components/Chat/ChatCard';
 import { useState } from 'react';
 
 const Messages = () => {

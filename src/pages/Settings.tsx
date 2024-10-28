@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import CoverOne from '../images/cover/cover-01.png';
-import userThree from '../images/user/user-03.png';
+import CoverOne from '@/images/cover/cover-01.png';
+import userThree from '@/images/user/user-03.png';
 import { PencilSquareIcon, CameraIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
-import useImageUploader from '../hooks/useUploader';
+import useImageUploader from '@/hooks/useUploader';
 
 
 const Settings = () => {
