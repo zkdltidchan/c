@@ -50,17 +50,17 @@ const Messages = () => {
           {/* section - message chatbox - end */}
 
           {/* section - input box - start */}
-          <div className="p-4 border-t border-stroke dark:border-strokedark dark:bg-boxdark bg-white flex items-center gap-3">
+          <div className="p-4 dark:bg-boxdark bg-white flex items-center gap-2">
             <input
               type="text"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
-              className="flex-1 p-3 rounded-md border border-stroke dark:border-strokedark dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+              className="flex-1 p-2  rounded-full border border-stroke dark:border-strokedark dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="Type your message here..."
             />
             <button
               onClick={handleSendMessage}
-              className="bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90"
+              className="bg-primary text-white py-2 px-4 rounded-full hover:bg-opacity-90"
             >
               Send
             </button>

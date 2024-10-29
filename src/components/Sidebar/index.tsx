@@ -208,7 +208,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <MenuLink to="/notification" pathname={pathname} name="Notification" icon={<BellIcon/>} />
               <MenuLink to="/messages" pathname={pathname} name="Messages" icon={<ChatBubbleBottomCenterIcon/>} />
               <MenuLink to="/communities" pathname={pathname} name="Communities" icon={<UserGroupIcon/>} />
-              <MenuLink to="/profile" pathname={pathname} name="Profile" icon={<UserIcon/>} />
+              <MenuLink to="/profile/kaichan" pathname={pathname} name="Profile" icon={<UserIcon/>} />
             </ul>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">Other</h3>
             <ul className="mb-6 flex flex-col gap-1.5">

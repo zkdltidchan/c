@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
@@ -13,6 +15,9 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import DefaultLayout from './layout/DefaultLayout';
 import Messages from './pages/Messages';
+import { Feed } from './pages/Home';
+
+const queryClient = new QueryClient();
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -29,8 +34,19 @@ function App() {
   return loading ? (
     <Loader />
   ) : (
+    <QueryClientProvider client={queryClient}>
     <DefaultLayout>
       <Routes>
+        <Route
+          path="/home"
+          element={
+            <>
+              <PageTitle title="Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <Feed />
+            </>
+          }
+        />
+
         <Route
           path="/calendar"
           element={
@@ -41,7 +57,7 @@ function App() {
           }
         />
         <Route
-          path="/profile/:id"
+          path="/profile/:handle"
           element={
             <>
               <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
@@ -105,6 +121,7 @@ function App() {
         />
       </Routes>
     </DefaultLayout>
+    </QueryClientProvider>
   );
 }
 

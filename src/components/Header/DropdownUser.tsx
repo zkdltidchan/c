@@ -1,10 +1,26 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
-// import UserOne from '../../images/user/user-01.png';
+import { useGetMe } from "@/application/queries/use-get-me";
+// import { useLogout } from "@/application/mutations/use-logout";
+
+import { isAuthenticated } from "@/domain/me";
 
 const DropdownUser = () => {
+  const me = useGetMe();
+  // const logout = useLogout();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  if (me.isError || !isAuthenticated(me.data)) {
+    console.log(me.error);
+    return (
+      <div className="w-full flex justify-end items-center p-2">
+          <button>
+            Login
+          </button>
+      </div>
+    );
+  }
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -15,13 +31,13 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Kai Chan
+            {me.data.name}
           </span>
-          <span className="block text-xs">Blockchain Developer</span>
+          <span className="block text-xs">@{me.data.id}</span>
         </span>
 
         <span className="h-8 w-8 rounded-full">
-          <img src="https://api.dicebear.com/9.x/dylan/svg?radius=50" alt="User" />
+          <img src={me.data.avatar} alt="User" />
         </span>
 
         <svg
@@ -49,7 +65,7 @@ const DropdownUser = () => {
           <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
             <li>
               <Link
-                to="/profile"
+                to={`/profile/${me.data.id}`}
                 className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
               >
                 <svg

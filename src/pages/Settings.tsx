@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import CoverOne from '@/images/cover/cover-01.png';
-import userThree from '@/images/user/user-03.png';
+
+import { useGetMe } from '@/application/queries/use-get-me';
 import { PencilSquareIcon, CameraIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
 import useImageUploader from '@/hooks/useUploader';
+import { Textarea } from '@/components/Ui/Textarea';
+import { Label } from '@/components/Ui/Label';
 
 
 const Settings = () => {
+  const me = useGetMe();
   const { uploadImage, uploading, uploadedUrl } = useImageUploader();
   const [newID, setNewID] = useState<string>('');
   const [newName, setNewName] = useState<string>('');
@@ -57,29 +60,17 @@ const Settings = () => {
   };
 
   useEffect(() => {
-    const { id, name, email, phone, coverUrl, profileUrl, description, posts, followers, following } = {
-      id: '@KaiChan',
-      name: 'Cristina Groves',
-      email: 'uJq0x@example.com',
-      phone: '+1 987 654 3210',
-      coverUrl: CoverOne,
-      profileUrl: userThree,
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis at velit maximus, molestie lorem eu, pretium arcu.',
-      posts: 120,
-      followers: 120,
-      following: 120
-    };
-
-    setNewID(id);
-    setNewName(name);
-    setNewCover(coverUrl);
-    setNewProfile(profileUrl);
-    setNewEmail(email);
-    setNewPhone(phone);
-    setNewBio(description);
-    setFollowers(followers);
-    setFollowing(following);
-    setPosts(posts);
+    if (!me.data) return;
+    setNewID(me.data.id);
+    setNewName(me.data.name);
+    setNewCover(me.data.cover);
+    setNewProfile(me.data.avatar);
+    setNewEmail(me.data.email);
+    setNewPhone(me.data.phone);
+    setNewBio(me.data.bio!);
+    setFollowers(me.data.followerIds.length);
+    setFollowing(me.data.followingIds.length);
+    setPosts(me.data.postIds.length);
   }, []);
 
   return (
@@ -121,7 +112,7 @@ const Settings = () => {
                   </div>
                   <div className="mt-4">
                     <h3 className="mb-1.5 text-md font-semibold text-black dark:text-white">{newName}</h3>
-                    <p className="text-xs font-medium">{newID}</p>
+                    <p className="text-xs font-medium">@{newID}</p>
                     <div className="grid max-w-70 grid-cols-3 py-2.5">
                       <div className="flex flex-col items-center justify-left gap-1 xsm:flex-row">
                         <span className="font-semibold text-black dark:text-white">{posts}</span>
@@ -153,12 +144,7 @@ const Settings = () => {
                 <form action="#">
                   {/* <!-- Name --> */}
                   <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
-                    >
-                      Username
-                    </label>
+                    <Label htmlFor="Username">Username</Label>
                     <input
                       className="w-full rounded-2xl border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="text"
@@ -174,19 +160,14 @@ const Settings = () => {
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
 
                     <div className="w-full sm:w-1/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="userID"
-                      >
-                        User ID
-                      </label>
+                      <Label htmlFor="userID">User ID</Label>
                       <div className="relative">
                         <input
                           className="w-full rounded-2xl border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                           type="text"
                           name="userID"
                           id="userID"
-                          placeholder="newID"
+                          placeholder="Input User ID"
                           defaultValue={newID}
                           onChange={handleIDChange}
                         />
@@ -194,12 +175,7 @@ const Settings = () => {
                     </div>
 
                     <div className="w-full sm:w-1/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
-                      >
-                        Phone Number
-                      </label>
+                      <Label htmlFor="phoneNumber">Phone Number</Label>
                       <input
                         className="w-full rounded-2xl border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
@@ -214,12 +190,7 @@ const Settings = () => {
 
                   {/* <!-- Email --> */}
                   <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="emailAddress"
-                    >
-                      Email Address
-                    </label>
+                    <Label htmlFor="emailAddress">Email Address</Label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
                         <EnvelopeIcon className="h-4.5 w-4.5" />
@@ -238,25 +209,19 @@ const Settings = () => {
 
                   {/* <!-- Bio --> */}
                   <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
-                    >
-                      BIO
-                    </label>
+                    <Label htmlFor="bio">Bio</Label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
                         <PencilSquareIcon className="h-4.5 w-4.5" />
                       </span>
-                      <textarea
-                        className="w-full rounded-2xl border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      <Textarea
                         name="bio"
                         id="bio"
-                        rows={6}
+                        rows={4}
                         placeholder="Write your bio here"
                         defaultValue={newBio}
                         onChange={handleBioChange}
-                      ></textarea>
+                      />
                     </div>
                   </div>
 
